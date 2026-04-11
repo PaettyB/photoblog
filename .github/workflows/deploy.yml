@@ -20,5 +20,5 @@ jobs:
             cd /opt/photoblog
             git fetch origin main
             git reset --hard origin/main
-            docker compose --profile prod up -d --build
+            docker compose --profile prod up -d --build --remove-orphans
 
