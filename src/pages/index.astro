@@ -3,7 +3,26 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import portrait from "../content/photos/portrait.jpg";
+
+function getAge(birthDateString: string): number {
+  const today = new Date();
+  const birthDate = new Date(birthDateString);
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const hasHadBirthday =
+    today.getMonth() > birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() &&
+     today.getDate() >= birthDate.getDate());
+
+  if (!hasHadBirthday) age--;
+
+  return age;
+}
+const age = getAge("2001-11-03");
 ---
+
 
 <!doctype html>
 <html lang="en">
@@ -13,37 +32,50 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
+			<h1>Hi, this is Patrick!</h1>
+			<div class="flex items-center gap-6">
+				<div class="pswp-gallery" id="profile-gallery">
+					<a
+					href={portrait.src}
+					data-pswp-width={portrait.width}
+					data-pswp-height={portrait.height}
+					target="_blank"
+					rel="noreferrer"
+					class="block"
+					>
+					<img
+						src={portrait.src}
+						alt="Profile picture"
+						width={portrait.width}
+						height={portrait.height}
+						class="size-200 !rounded-full object-cover shadow-lg"
+					/>
+					</a>
+				</div>
+
+				<p>
+					Welcome to my Website! I am a {age}-year-old software developer and data engineer from Germany.
+					On here, I share my interests travelling and whatever elese comes to my mind. Take a look around!
+				</p>
+			</div>
+			<p class="mt-5">
+				This website is a side project of mine, built with <a href="https://astro.build">Astro</a>.
+				
 			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
+		</main>	
 		<Footer />
 	</body>
 </html>
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#profile-gallery",
+    children: "a",
+    pswpModule: () => import("photoswipe"),
+  });
+
+  lightbox.init();
+</script>
