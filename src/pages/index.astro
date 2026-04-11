@@ -4,6 +4,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import portrait from "../content/photos/portrait.jpg";
+import kitty from "../content/photos/kitty.jpg";
 
 function getAge(birthDateString: string): number {
   const today = new Date();
@@ -59,9 +60,27 @@ const age = getAge("2001-11-03");
 				</p>
 			</div>
 			<p class="mt-5">
-				This website is a side project of mine, built with <a href="https://astro.build">Astro</a>.
-				
+				This website is a side project of mine, built with <a href="https://astro.build">Astro</a>, containerized 
+				with Docker, and deployed in a CI/CD pipeline using GitHub Actions. Anyways, here is a picture of my cat:
 			</p>
+			<div class="pswp-gallery" id="profile-gallery">
+					<a
+					href={kitty.src}
+					data-pswp-width={kitty.width}
+					data-pswp-height={kitty.height}
+					target="_blank"
+					rel="noreferrer"
+					class="block"
+					>
+					<img
+						src={kitty.src}
+						alt="This is my cat :)"
+						width={kitty.width}
+						height={kitty.height}
+						class="size-400 object-cover shadow-lg"
+					/>
+					</a>
+				</div>
 		</main>	
 		<Footer />
 	</body>
