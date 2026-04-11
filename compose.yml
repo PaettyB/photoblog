@@ -13,6 +13,7 @@ services:
       CHOKIDAR_USEPOLLING: "true"
     stdin_open: true
     tty: true
+    profiles: ["dev"]
 
   astro-prod:
     build:
@@ -20,4 +21,6 @@ services:
       dockerfile: Dockerfile.prod
     container_name: astro-photo-blog-prod
     ports:
-      - "8080:80"
+      - "80:80"
+    restart: unless-stopped
+    profiles: ["prod"]

@@ -1,60 +1,24 @@
-name: Build and Deploy
+name: Deploy blog
 
 on:
   push:
     branches: [main]
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Dockerfile.prod
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
   deploy:
-    needs: build
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Pull latest image
-        run: docker pull ghcr.io/${{ github.repository }}:main
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_DEPLOYMENT }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /opt/photo-blog
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose --profile prod up -d --build
 
-      - name: Stop old container
-        run: docker rm -f astro-app || true
-
-      - name: Start new container
-        run: |
-          docker run -d \
-            --name astro-app \
-            --restart unless-stopped \
-            -p 80:80 \
-            ghcr.io/${{ github.repository }}:main
