@@ -20,8 +20,8 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     container_name: astro-photo-blog-prod
-    ports:
-      - "80:80"
+    expose:
+      - "80"
     restart: unless-stopped
     profiles: ["prod"]
 
