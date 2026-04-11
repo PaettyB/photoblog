@@ -92,7 +92,7 @@ const posts = (await getCollection('blog')).sort(
 			<section>
 				<ul>
 					{
-						posts.map((post) => (
+						posts.length > 0 ? posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.id}/`}>
 									{post.data.heroImage && (
@@ -104,7 +104,7 @@ const posts = (await getCollection('blog')).sort(
 									</p>
 								</a>
 							</li>
-						))
+						)) : <div class="text-center w-full">No posts yet.</div>
 					}
 				</ul>
 			</section>
