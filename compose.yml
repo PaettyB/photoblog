@@ -1,9 +1,9 @@
 services:
-  astro:
+  astro-dev:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: astro-photo-blog
+      dockerfile: Dockerfile.dev
+    container_name: astro-photo-blog-dev
     ports:
       - "4321:4321"
     volumes:
@@ -13,3 +13,11 @@ services:
       CHOKIDAR_USEPOLLING: "true"
     stdin_open: true
     tty: true
+
+  astro-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: astro-photo-blog-prod
+    ports:
+      - "8080:80"
