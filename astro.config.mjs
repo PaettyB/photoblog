@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://patty-server.ddns.net',
+  site: 'https://patrick-barclay.de',
   integrations: [mdx(), sitemap()],
 
   fonts: [
