@@ -1,11 +1,16 @@
 ---
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+import logo from "../content/photos/logo_transparent.png";
+import '../styles/global.css';
 ---
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<div class="flex items-center">
+			<img class="w-20 mr-2" src={logo.src} alt="Logo"/> 
+			<h2 class="title"><a href="/">{SITE_TITLE}</a></h2>
+		</div>
 		<div class="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
@@ -40,7 +45,7 @@ import HeaderLink from './HeaderLink.astro';
 		background: white;
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 	}
-	h2 {
+	.title {
 		margin: 0;
 		font-size: 1em;
 	}
@@ -70,6 +75,11 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	@media (max-width: 720px) {
 		.social-links {
+			display: none;
+		}
+	}
+	@media (max-width: 460px) {
+		.title {
 			display: none;
 		}
 	}
