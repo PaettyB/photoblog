@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import portrait from "../content/photos/portrait.jpg";
 import kitty from "../content/photos/kitty.jpg";
+import { Image } from 'astro:assets';
 
 function getAge(birthDateString: string): number {
   const today = new Date();
@@ -44,11 +45,11 @@ const age = getAge("2001-11-03");
 					rel="noreferrer"
 					class="block"
 					>
-					<img
-						src={portrait.src}
+					<Image
+						src={portrait}
 						alt="This is me :)"
-						width={portrait.width}
-						height={portrait.height}
+						width="210px"
+						height="210px"
 						class="size-200 !rounded-full object-cover shadow-lg"
 					/>
 					</a>
@@ -72,11 +73,11 @@ const age = getAge("2001-11-03");
 					rel="noreferrer"
 					class="block"
 					>
-					<img
-						src={kitty.src}
+					<Image
+						src={kitty}
 						alt="This is my cat :)"
-						width={kitty.width}
-						height={kitty.height}
+						width="680px"
+						height="auto"
 						class="size-400 object-cover shadow-lg"
 					/>
 					</a>
