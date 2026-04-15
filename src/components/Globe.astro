@@ -2,14 +2,14 @@
 import type { HTMLAttributes } from 'astro/types';
 
 const {
-  width = 400,
-  height = 400,
+	containerID,
+	heightRatio = 1.0,
   markers = []
 } = Astro.props;
 
 ---
 
-<div id="globeViz" data-markers={JSON.stringify(markers)} data-width={width} data-height={height}></div>
+<div id="globeViz" data-markers={JSON.stringify(markers)} data-containerID={containerID} data-height-ratio={heightRatio}></div>
 
 <script>
 
@@ -27,8 +27,12 @@ const {
 
 	const el = document.getElementById('globeViz');
   	const markers = JSON.parse(el.dataset.markers);
-	const width = parseInt(el.dataset.width);
-	const height = parseInt(el.dataset.height);
+	const containerID = el.dataset.containerid;
+	const container = document.getElementById(containerID);
+
+	const heightRatio = parseFloat(el.dataset.heightRatio);
+	const width = container.clientWidth;
+	const height = width * heightRatio;
 
 	markers.push({"lat": 48.13743, "lng": 11.57549, "label": "Home", "color": "green", "href": ""})
 
@@ -82,4 +86,19 @@ const {
     //   		globe.polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
 	// 	});
 
+	function resizeGlobe() {
+		const container = document.getElementById(containerID);
+		const width = container.clientWidth;
+		const height = width * heightRatio;
+
+		globe.width(width);
+		globe.height(height);
+	}
+
+  	window.addEventListener('resize', resizeGlobe);
+
+  	resizeGlobe();
+
 </script>
+
+
