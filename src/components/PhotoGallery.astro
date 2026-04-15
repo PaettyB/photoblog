@@ -1,0 +1,84 @@
+---
+const {
+  photos = []
+} = Astro.props;
+
+import portrait from "../content/photos/portrait.jpg";
+---
+
+<div class="photoswipe-gallery flex flex-wrap justify-center mb-8" id="profile-gallery">
+    {photos.map((photo) => (
+        <a
+            href={photo.data.src}
+            data-pswp-width={photo.data.width}
+            data-pswp-height={photo.data.height}
+            target="_blank"
+            rel="noreferrer"
+        >
+            <img
+                src={photo.data.src}
+                alt={photo.caption}
+                width={photo.data.width}
+                height={photo.data.height}
+                class={`m-2 rounded ${photo.caption == null ? 'caption-hidden' : ''}`}
+            />
+        </a>
+    ))}
+
+
+<script>
+	import PhotoSwipeLightbox from "photoswipe/lightbox";
+	import "photoswipe/style.css";
+
+	const lightbox = new PhotoSwipeLightbox({
+		gallery: "#profile-gallery",
+		children: "a",
+		pswpModule: () => import("photoswipe"),
+	});
+
+	lightbox.on('uiRegister', function() {
+	lightbox.pswp.ui.registerElement({
+		name: 'custom-caption',
+		order: 9,
+		isButton: false,
+		appendTo: 'root',
+		html: 'Caption text',
+		onInit: (el, pswp) => {
+		lightbox.pswp.on('change', () => {
+			const currSlideElement = lightbox.pswp.currSlide.data.element;
+			
+			let captionHTML = '';
+            let captionHidden = false;
+			if (currSlideElement) {
+				captionHTML = currSlideElement.querySelector('img').getAttribute('alt');
+                if(currSlideElement.querySelector('.caption-hidden')) {
+                    el.classList.add('hidden-caption-content');
+                } else {
+                    el.classList.remove('hidden-caption-content');
+                }
+			}
+			el.innerHTML = captionHTML;
+		});
+		}
+	});
+});
+
+  lightbox.init();
+</script>
+
+<style>
+    .photoswipe-gallery a img {
+        width: 100px;
+        height: auto;
+    }
+    @media (max-width: 600px) {
+        .photoswipe-gallery a img {
+            width: 80px;
+        }
+    }
+     @media (max-width: 360px) {
+        .photoswipe-gallery a img {
+            width: 50px;
+        }
+    }
+</style>

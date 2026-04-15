@@ -6,11 +6,50 @@ heroImage: '../photos/beach.jpg'
 ---
 
 import Globe from '../../components/Globe.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
 
-<div class="w-full flex justify-center">
+import brisbane_00 from '../photos/australia/brisbane-00.jpg';
+import brisbane_01 from '../photos/australia/brisbane-01.jpg';
+import brisbane_02 from '../photos/australia/brisbane-02.jpg';
+import brisbane_03 from '../photos/australia/brisbane-03.jpg';
+import brisbane_04 from '../photos/australia/brisbane-04.jpg';
+import brisbane_05 from '../photos/australia/brisbane-05.jpg';
+import brisbane_06 from '../photos/australia/brisbane-06.jpg';
+import brisbane_07 from '../photos/australia/brisbane-07.jpg';
+import brisbane_08 from '../photos/australia/brisbane-08.jpg';
+import brisbane_09 from '../photos/australia/brisbane-09.jpg';
+import brisbane_10 from '../photos/australia/brisbane-10.jpg';
+import brisbane_11 from '../photos/australia/brisbane-11.jpg';
+import brisbane_12 from '../photos/australia/brisbane-12.jpg';
+
+
+On December 9th, 2024, I received an email from my university, informing me that I had been accepted for the student exchange program in Australia. Then, over one year later, in February 2026 it was finally time to pack my bags an hop on the plan to Brisbane, where I would spend the next five months of my life. 
+
+<div class="w-full flex justify-center mb-8">
 	<Globe width={720} height={400} markers={[
 		{"lat": -27.46794, "lng": 153.02809, "label": "Brisbane", "color": "red", "href": ""},
 		{/* {"lat": -33.8688, "lng": 151.2093, "label": "Sydney", "color": "green", "href": ""},
 		{"lat": -28.64201, "lng": 153.61194, "label": "Byron Bay", "color": "green", "href": ""}, */}
 	]}/>
 </div>
+
+After settling into the room in a shared house in the suburb of Toowong, which was a result of a desperate and jet-lagged 3-day search, it was time to make some friends and explore the area. At the orientation week of uni, I quickly found a cool group of like-minded people. The first point on the agenda was to get to know the city of Brisbane, which is the capital of the state of Queensland and the third largest city in Australia. It is traversed by the Brisbane River, which makes for a very nice and relaxing atmosphere. Unfortunately, despite being close to the Pacific Ocean, Brisbane has no beaches or other natural swimming opportunities. However, I still think it is a really cool city, with lots of parks, a beautiful skyline and fun bar areas. 
+
+
+<PhotoGallery photos={[
+	{data: brisbane_00, caption: `"Rainforest walk"`},
+	{data: brisbane_01},
+	{data: brisbane_02, caption: "View over the Central Business District (CBD), where we went next"},
+	{data: brisbane_03, caption: "City hall"},
+	{data: brisbane_04},
+	{data: brisbane_05},
+	{data: brisbane_06},
+	{data: brisbane_07, caption: "Lots of cool buildings with greenery attached to them"},
+	{data: brisbane_08},
+	{data: brisbane_09, caption: "After the CBD, we went to Queen Victoria Park"},
+	{data: brisbane_10, caption: "Swarm of Ibis birds in the tree. These things are everywhere in the city"},
+	{data: brisbane_11},
+	{data: brisbane_12, caption: "Its so green everywhere :)"}
+]}/>
+
+To be continued...

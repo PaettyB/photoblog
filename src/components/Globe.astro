@@ -21,12 +21,17 @@ const {
 		<circle fill="black" cx="14" cy="14" r="7"></circle>
 	</svg>`;
 
+	const homeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+		<path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M21.4498 10.275L11.9998 3.1875L2.5498 10.275L2.9998 11.625H3.7498V20.25H20.2498V11.625H20.9998L21.4498 10.275ZM5.2498 18.75V10.125L11.9998 5.0625L18.7498 10.125V18.75H14.9999V14.3333L14.2499 13.5833H9.74988L8.99988 14.3333V18.75H5.2498ZM10.4999 18.75H13.4999V15.0833H10.4999V18.75Z"/>
+		</svg>`;
+
 	const el = document.getElementById('globeViz');
   	const markers = JSON.parse(el.dataset.markers);
 	const width = parseInt(el.dataset.width);
 	const height = parseInt(el.dataset.height);
 
-	console.log('markers', markers);
+	markers.push({"lat": 48.13743, "lng": 11.57549, "label": "Home", "color": "green", "href": ""})
+
 
     const globe = new Globe(el)
 		.globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg')
@@ -35,8 +40,14 @@ const {
 		.backgroundColor('rgba(255,255,255,0)')
 		.htmlElementsData(markers)
 		.htmlElement(d => {
+			if(d.label == 'Home') {
+				const marker = document.createElement('div');
+				marker.innerHTML = homeSvg;
+				marker.style.width = '30px';
+				marker.style.color =  d.color;
+				return marker;
+			}
 			const marker = document.createElement('div');
-			// Add child to marker div with the label
 			const label = document.createElement('span');
 			label.innerText = d.label;
 			label.style.position = 'absolute';
