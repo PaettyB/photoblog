@@ -1,0 +1,74 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+const {
+  width = 400,
+  height = 400,
+  markers = []
+} = Astro.props;
+
+---
+
+<div id="globeViz" data-markers={JSON.stringify(markers)} data-width={width} data-height={height}></div>
+
+<script>
+
+	import Globe from 'globe.gl';
+    
+	
+	 const markerSvg = `<svg viewBox="-4 0 36 36">
+		<path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
+		<circle fill="black" cx="14" cy="14" r="7"></circle>
+	</svg>`;
+
+	const el = document.getElementById('globeViz');
+  	const markers = JSON.parse(el.dataset.markers);
+	const width = parseInt(el.dataset.width);
+	const height = parseInt(el.dataset.height);
+
+	console.log('markers', markers);
+
+    const globe = new Globe(el)
+		.globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg')
+		.bumpImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png')
+		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: 1.5 }, 4000)
+		.backgroundColor('rgba(255,255,255,0)')
+		.htmlElementsData(markers)
+		.htmlElement(d => {
+			const marker = document.createElement('div');
+			// Add child to marker div with the label
+			const label = document.createElement('span');
+			label.innerText = d.label;
+			label.style.position = 'absolute';
+			label.style.display = 'none';
+			label.style.top = '-150%';
+			label.style.zIndex = '10';
+			
+			marker.innerHTML = markerSvg;
+			marker.appendChild(label);
+			marker.style.color =  d.color;
+			marker.style.width = '20px';
+
+			marker.style['pointer-events'] = 'auto';
+			marker.style.cursor = 'pointer';
+			marker.onclick = () => console.info(d);
+			marker.onmouseover = () => {
+				label.style.display = 'block';
+			};
+			marker.onmouseout = () => {
+				label.style.display = 'none';
+			};
+			return marker;
+		})
+		.width(width)
+		.height(height);
+	//   .polygonCapColor(feat => 'rgba(200, 0, 0, 0.6)')
+    //   .polygonSideColor(() => 'rgba(0, 100, 0, 0.05)')
+
+	//  fetch('/ne_110m_admin_0_countries.geojson')
+	//  	.then(res => res.json())
+	// 	.then(countries => {
+    //   		globe.polygonsData(countries.features.filter(d => d.properties.ISO_A2 !== 'AQ'))
+	// 	});
+
+</script>
