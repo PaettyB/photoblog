@@ -16,14 +16,58 @@ const {
 	import Globe from 'globe.gl';
     
 	
-	 const markerSvg = `<svg viewBox="-4 0 36 36">
-		<path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
-		<circle fill="black" cx="14" cy="14" r="7"></circle>
-	</svg>`;
+	 const markerSvg = `
+	 	<div style="position:absolute; width: 100%; height: 100%; left: -50%; top: -100%">
+			<svg class="geomarker" viewBox="-4 0 36 36" >
+				<path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
+				<circle fill="black" cx="14" cy="14" r="7"></circle>
+			</svg>
+		</div>`;
 
 	const homeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 		<path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M21.4498 10.275L11.9998 3.1875L2.5498 10.275L2.9998 11.625H3.7498V20.25H20.2498V11.625H20.9998L21.4498 10.275ZM5.2498 18.75V10.125L11.9998 5.0625L18.7498 10.125V18.75H14.9999V14.3333L14.2499 13.5833H9.74988L8.99988 14.3333V18.75H5.2498ZM10.4999 18.75H13.4999V15.0833H10.4999V18.75Z"/>
 		</svg>`;
+
+	function makeMarker(text: string, color: string, size: number = 20) {
+		const marker = `
+			<div style="color: ${color};
+				width: ${size}px;
+				height: ${size}px;
+				pointer-events: auto;
+				cursor: pointer;">
+				${markerSvg}
+				<span style="position: absolute; 
+					top: -62px; 
+					left: 25px; 
+					padding-bottom: 15px; 
+					z-index: 10;
+					display: none;
+					white-space: nowrap;">
+						${text}
+				</span>
+				<div style="padding: 10px;
+					position: absolute;
+					width: 55px; 
+					height: 55px; 
+					top: -45px;
+					left: -15px;
+					transform: skewX(-30deg); 
+					transform-origin: bottom left;
+					display: none;
+					z-index: 5;">
+					<div style="
+						width: 100%;
+						height: 100%;
+						border-top: 2px solid ${color}; 
+						border-left: 2px solid ${color}; 
+						">
+					</div>
+				</div>
+			</div>`;
+		return marker;
+	}
+	
+	
 
 	const el = document.getElementById('globeViz');
   	const markers = JSON.parse(el.dataset.markers);
@@ -40,7 +84,7 @@ const {
     const globe = new Globe(el)
 		.globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg')
 		.bumpImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png')
-		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: 1.5 }, 4000)
+		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: 1.5 }, 1000)
 		.backgroundColor('rgba(255,255,255,0)')
 		.htmlElementsData(markers)
 		.htmlElement(d => {
@@ -52,27 +96,37 @@ const {
 				return marker;
 			}
 			const marker = document.createElement('div');
-			const label = document.createElement('span');
-			label.innerText = d.label;
-			label.style.position = 'absolute';
-			label.style.display = 'none';
-			label.style.top = '-150%';
-			label.style.zIndex = '10';
-			
-			marker.innerHTML = markerSvg;
-			marker.appendChild(label);
-			marker.style.color =  d.color;
-			marker.style.width = '20px';
+			marker.innerHTML = makeMarker(d.label, d.color, d.size);
+			const label = marker.children[0].children[1];
+			const connector = marker.children[0].children[2];
 
-			marker.style['pointer-events'] = 'auto';
-			marker.style.cursor = 'pointer';
 			marker.onclick = () => console.info(d);
 			marker.onmouseover = () => {
 				label.style.display = 'block';
+				connector.style.display = 'block';
+
+				document.querySelectorAll('.geomarker').forEach(el => {
+					el.style.opacity = '0.3';
+				});
 			};
+
 			marker.onmouseout = () => {
 				label.style.display = 'none';
+				connector.style.display = 'none';
+
+				document.querySelectorAll('.geomarker').forEach(el => {
+					el.style.opacity = '1';
+				});
 			};
+			marker.onwheel = (e) => {
+				e.preventDefault();
+				label.style.display = 'none';
+				connector.style.display = 'none';
+
+				document.querySelectorAll('.geomarker').forEach(el => {
+					el.style.opacity = '1';
+				});
+			}
 			return marker;
 		})
 		.width(width)
