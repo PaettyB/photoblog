@@ -19,11 +19,11 @@ import portrait from "../content/photos/portrait.jpg";
             <Image
                 src={photo.data}
                 alt={photo.caption || ''}
-                width="100px"
-                height="auto"
+                height="120"
                 loading="lazy"
                 decoding="async"
-                class={`m-2 rounded ${photo.caption == null ? 'caption-hidden' : ''}`}
+                class={`m-2 rounded ${(photo.caption == null || photo.caption === '') 
+                        ? 'caption-hidden' : ''}`}
             />
         </a>
     ))}
@@ -72,17 +72,17 @@ import portrait from "../content/photos/portrait.jpg";
 
 <style>
     .photoswipe-gallery a img {
-        width: 100px;
-        height: auto;
+        height: 120px;
+        width: auto;
     }
     @media (max-width: 600px) {
         .photoswipe-gallery a img {
-            width: 80px;
+            height: 100px;
         }
     }
      @media (max-width: 360px) {
         .photoswipe-gallery a img {
-            width: 50px;
+            height: 75px;
         }
     }
 </style>

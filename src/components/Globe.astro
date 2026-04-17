@@ -84,7 +84,7 @@ const {
     const globe = new Globe(el)
 		.globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg')
 		.bumpImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png')
-		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: 1.5 }, 1000)
+		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: 0.7 }, 5000)
 		.backgroundColor('rgba(255,255,255,0)')
 		.htmlElementsData(markers)
 		.htmlElement(d => {
