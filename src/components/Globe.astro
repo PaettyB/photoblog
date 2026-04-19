@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+// import earth_img from '../assets/earth_noClouds.0330.jpg';
 
 const {
 	containerID,
@@ -17,7 +18,7 @@ const {
     
 	
 	 const markerSvg = `
-	 	<div style="position:absolute; width: 100%; height: 100%; left: -50%; top: -100%">
+	 	<div style="position:absolute; width: 100%; height: 100%; top: -50%">
 			<svg class="geomarker" viewBox="-4 0 36 36" >
 				<path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
 				<circle fill="black" cx="14" cy="14" r="7"></circle>
@@ -37,8 +38,8 @@ const {
 				cursor: pointer;">
 				${markerSvg}
 				<span style="position: absolute; 
-					top: -62px; 
-					left: 25px; 
+					top: calc(-10px + 50% - 52px); 
+					left: calc(-10px + 50% + 35px);
 					padding-bottom: 15px; 
 					z-index: 10;
 					display: none;
@@ -49,17 +50,17 @@ const {
 					position: absolute;
 					width: 55px; 
 					height: 55px; 
-					top: -45px;
-					left: -15px;
-					transform: skewX(-30deg); 
-					transform-origin: bottom left;
-					display: none;
+					top: calc(-10px + 50% - 35px);
+					left: calc(-10px + 50%);
+					display:none;
 					z-index: 5;">
 					<div style="
 						width: 100%;
 						height: 100%;
 						border-top: 2px solid ${color}; 
 						border-left: 2px solid ${color}; 
+						transform: skewX(-30deg);
+						transform-origin: bottom left;
 						">
 					</div>
 				</div>
@@ -82,9 +83,10 @@ const {
 
 
     const globe = new Globe(el)
-	.globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg')
-	.bumpImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png')
-	// .globeTileEngineUrl((x, y, l) => `https://tile.openstreetmap.org/${l}/${x}/${y}.png`)
+		.globeImageUrl('/globe.jpg')
+		// .globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg')
+		// .bumpImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png')
+		// .globeTileEngineUrl((x, y, l) => `https://tile.openstreetmap.org/${l}/${x}/${y}.png`)
 		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: 0.7 }, 5000)
 		.backgroundColor('rgba(255,255,255,0)')
 		.htmlElementsData(markers)
