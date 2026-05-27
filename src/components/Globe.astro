@@ -5,12 +5,13 @@ import type { HTMLAttributes } from 'astro/types';
 const {
 	containerID,
 	heightRatio = 1.0,
+	altitude = 0.7,
   markers = []
 } = Astro.props;
 
 ---
 
-<div id="globeViz" data-markers={JSON.stringify(markers)} data-containerID={containerID} data-height-ratio={heightRatio}></div>
+<div id="globeViz" data-markers={JSON.stringify(markers)} data-containerID={containerID} data-height-ratio={heightRatio} data-altitude={altitude}></div>
 
 <script>
 
@@ -43,7 +44,9 @@ const {
 					padding-bottom: 15px; 
 					z-index: 10;
 					display: none;
-					white-space: nowrap;">
+					white-space: nowrap;
+					font-weight: bold;
+					text-shadow: 1px 1px 5px black;">
 						${text}
 				</span>
 				<div style="padding: 10px;
@@ -76,6 +79,7 @@ const {
 	const container = document.getElementById(containerID);
 
 	const heightRatio = parseFloat(el.dataset.heightRatio);
+	const altitude = parseFloat(el.dataset.altitude);
 	const width = container.clientWidth;
 	const height = width * heightRatio;
 
@@ -87,7 +91,7 @@ const {
 		// .globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg')
 		// .bumpImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png')
 		// .globeTileEngineUrl((x, y, l) => `https://tile.openstreetmap.org/${l}/${x}/${y}.png`)
-		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: 0.7 }, 5000)
+		.pointOfView({ lat: markers[0]?.lat || 35, lng: markers[0]?.lng || 11, altitude: altitude }, 5000)
 		.backgroundColor('rgba(255,255,255,0)')
 		.htmlElementsData(markers)
 		.htmlElement(d => {
