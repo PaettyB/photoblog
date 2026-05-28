@@ -20,5 +20,6 @@ jobs:
             cd /opt/photoblog
             git fetch origin main
             git reset --hard origin/main
+            docker system prune -a
             docker compose --profile prod up -d --build --force-recreate --remove-orphans
 
